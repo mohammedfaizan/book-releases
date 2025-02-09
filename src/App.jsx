@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import BookForm from "./components/BookForm";
+import BookList from "./components/BookList";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [books, setBooks] = useState([
+    {
+      id: 1,
+      title: "The Future We Make",
+      author: "Jane Doe",
+      releaseDate: "2025-08-10",
+      genre: "Science Fiction",
+      wishlisted: true,
+    },
+    {
+      id: 2,
+      title: "Echoes of the Past",
+      author: "John Smith",
+      releaseDate: "2025-05-20",
+      genre: "Historical Fiction",
+      wishlisted: false,
+    },
+  ]);
+
+  function toggleWishlist(bookId) {
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book.id === bookId ? { ...book, wishlisted: !book.wishlisted } : book
+      )
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="main-container">
+      <h1>Upcoming Book Releases</h1>
+
+      <BookForm setBooks={setBooks} />
+      <BookList books={books} toggleWishlist={toggleWishlist} />
+    </div>
+  );
 }
 
-export default App
+export default App;
